@@ -28,7 +28,7 @@ public class Duke {
                     System.out.println(number + ". " + strLst[i]);
                 }
             } else{
-                System.out.println("added: "+ input+"\n");
+                System.out.println("added: "+ input);
                 // Add user input into string array
                 strLst[cnt++] = input;
             }
