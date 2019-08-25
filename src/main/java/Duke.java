@@ -13,15 +13,24 @@ public class Duke {
         // Declare the object and initialize with
         // predefined standard input object
         Scanner sc = new Scanner(System.in);
+        // Create a new String array
+        String[] strLst = new String[100];
+        int cnt=0;
         while (true) {
             // String input
-            String input = sc.next();
-            // Print out corresponding info
-            if (input.equals("list") || input.equals("blah")) {
-                System.out.println(input+"\n");
-            } else if (input.equals("bye")) {
+            String input = sc.nextLine();
+            if (input.equals("bye")) {
                 System.out.println("Bye. Hope to see you again soon!\n");
                 System.exit(0);
+            } else if (input.equals("list")) {
+                for(int i = 0; i < cnt; i++) {
+                    int number = i+1;
+                    System.out.println(number + ". " + strLst[i]);
+                }
+            } else{
+                System.out.println("added: "+ input+"\n");
+                // Add user input into string array
+                strLst[cnt++] = input;
             }
         }
     }
