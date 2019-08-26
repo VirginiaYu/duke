@@ -34,15 +34,17 @@ public class Duke {
 
             // List tasks
             else if (input.equals("list")) {
+
                 // If no task added
                 if (cnt==0)
                     System.out.println("No task in your list!");
+
                 // List all task w/ their status
                 else {
                     System.out.println("Here are the tasks in your list:");
                     for(int i = 0; i < cnt; i++) {
                         int number = i+1;
-                        System.out.println(number+".["+taskArray[i].getStatusIcon()+"] "+taskArray[i].getDescription());
+                        System.out.println(number+"."+taskArray[i].toString());
                     }
                 }
             }
@@ -53,28 +55,64 @@ public class Duke {
                 taskArray[index-1].markAsDone();
             }
 
-            // Add item
+            // Add event
+            else if (input.startsWith("event")) {
+
+                // Split the input, and get the event and the event data/time
+                String event = input.substring(6).split(" /at ")[0];
+                String at = input.split(" /at ")[1];
+
+                // Add the task into the list
+                taskArray[cnt++] = new Event(event,at);
+
+                // Print out the info of the task
+                System.out.println("Got it. I've added this task:");
+                System.out.println("  "+taskArray[cnt-1].toString());
+                // Show how many tasks are there in the list now
+                System.out.println("Now you have " + cnt + " tasks in the list.");
+
+            }
+
+            else if (input.startsWith("deadline")) {
+
+                // Split the input, and get the deadline and the ddl data/time
+                String ddl = input.substring(9).split(" /by ")[0];
+                String by = input.split(" /by ")[1];
+
+                // Add the task into the list
+                taskArray[cnt++] = new Deadline(ddl,by);
+
+                // Print out the info of the task
+                System.out.println("Got it. I've added this task:");
+                System.out.println("  "+taskArray[cnt-1].toString());
+                // Show how many tasks are there in the list now
+                System.out.println("Now you have " + cnt + " tasks in the list.");
+
+            }
+
+            else if (input.startsWith("todo")) {
+
+                // Split the input, and get the todo
+                String todo = input.substring(5);
+
+                // Add the task into the list
+                taskArray[cnt++] = new Todo(todo);
+
+                // Print out the info of the task
+                System.out.println("Got it. I've added this task:");
+                System.out.println("  "+taskArray[cnt-1].toString());
+                // Show how many tasks are there in the list now
+                System.out.println("Now you have " + cnt + " tasks in the list.");
+
+            }
+
+            // Deal w/ other types of tasks
             else{
+                // Print out the added task
                 System.out.println("added: "+input);
                 // Add user input into string array
-                taskArray[cnt++]= new Task(input);
+                taskArray[cnt++] = new Task(input);
             }
         }
     }
 }
-
-
-
-//list
-//    ____________________________________________________________
-//     Here are the tasks in your list:
-//     1.[✓] read book
-//     2.[✗] return book
-//     3.[✗] buy bread
-//    ____________________________________________________________
-//
-//done 2
-//    ____________________________________________________________
-//     Nice! I've marked this task as done:
-//       [✓] return book
-//
