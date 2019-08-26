@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.regex.*;
 
 public class Duke {
     public static void main(String[] args) {
@@ -23,7 +24,7 @@ public class Duke {
 
         while (true) {
 
-            // String input
+            // String user input
             String input = sc.nextLine();
 
             // Exit
@@ -58,61 +59,131 @@ public class Duke {
             // Add event
             else if (input.startsWith("event")) {
 
-                // Split the input, and get the event and the event data/time
-                String event = input.substring(6).split(" /at ")[0];
-                String at = input.split(" /at ")[1];
+                // Try and catch block
+                try {
 
-                // Add the task into the list
-                taskArray[cnt++] = new Event(event,at);
+                    // Check if the right format
+                    String eventInfo = checkItem("event", input);
 
-                // Print out the info of the task
-                System.out.println("Got it. I've added this task:");
-                System.out.println("  "+taskArray[cnt-1].toString());
-                // Show how many tasks are there in the list now
-                System.out.println("Now you have " + cnt + " tasks in the list.");
+                    // Split the input, and get the event and the event data/time
+                    String event = eventInfo.split(" /at ")[0];
+                    String at = eventInfo.split(" /at ")[1];
+
+                    // Add the task into the list
+                    taskArray[cnt++] = new Event(event,at);
+
+                    // Print out the info of the task
+                    System.out.println("Got it. I've added this task:");
+                    System.out.println("  "+taskArray[cnt-1].toString());
+                    // Show how many tasks are there in the list now
+                    System.out.println("Now you have " + cnt + " tasks in the list.");
+
+                }
+
+                catch (DukeException ex)
+                {
+                    //System.out.println("☹ OOPS!!! I'm sorry, but I don't know what that means :-(");
+                    System.out.println(ex.getMessage());
+                }
 
             }
 
             else if (input.startsWith("deadline")) {
 
-                // Split the input, and get the deadline and the ddl data/time
-                String ddl = input.substring(9).split(" /by ")[0];
-                String by = input.split(" /by ")[1];
+                // Try and catch block
+                try {
 
-                // Add the task into the list
-                taskArray[cnt++] = new Deadline(ddl,by);
+                    // Check if the right format
+                    String ddlInfo = checkItem("deadline", input);
 
-                // Print out the info of the task
-                System.out.println("Got it. I've added this task:");
-                System.out.println("  "+taskArray[cnt-1].toString());
-                // Show how many tasks are there in the list now
-                System.out.println("Now you have " + cnt + " tasks in the list.");
+                    // Split the input, and get the deadline and the ddl data/time
+                    String ddl = ddlInfo.split(" /by ")[0];
+                    String by = ddlInfo.split(" /by ")[1];
+
+                    // Add the task into the list
+                    taskArray[cnt++] = new Deadline(ddl,by);
+
+                    // Print out the info of the task
+                    System.out.println("Got it. I've added this task:");
+                    System.out.println("  "+taskArray[cnt-1].toString());
+                    // Show how many tasks are there in the list now
+                    System.out.println("Now you have " + cnt + " tasks in the list.");
+
+                }
+
+                catch (DukeException ex)
+                {
+                    //System.out.println("☹ OOPS!!! I'm sorry, but I don't know what that means :-(");
+                    System.out.println(ex.getMessage());
+                }
 
             }
 
             else if (input.startsWith("todo")) {
 
-                // Split the input, and get the todo
-                String todo = input.substring(5);
+                // Try and catch block
+                try
+                {
+                    // Check if the right format
+                    String todoInfo = checkItem("todo", input);
 
-                // Add the task into the list
-                taskArray[cnt++] = new Todo(todo);
+                    // Add the task into the list
+                    taskArray[cnt++] = new Todo(todoInfo);
 
-                // Print out the info of the task
-                System.out.println("Got it. I've added this task:");
-                System.out.println("  "+taskArray[cnt-1].toString());
-                // Show how many tasks are there in the list now
-                System.out.println("Now you have " + cnt + " tasks in the list.");
+                    // Print out the info of the task
+                    System.out.println("Got it. I've added this task:");
+                    System.out.println("  "+taskArray[cnt-1].toString());
+                    // Show how many tasks are there in the list now
+                    System.out.println("Now you have " + cnt + " tasks in the list.");
+
+                }
+
+                catch (DukeException ex)
+                {
+                    //System.out.println("☹ OOPS!!! I'm sorry, but I don't know what that means :-(");
+                    System.out.println(ex.getMessage());
+                }
+
 
             }
 
-            // Deal w/ other types of tasks
+            // Deal w/ exceptions
             else{
-                // Print out the added task
-                System.out.println("added: "+input);
-                // Add user input into string array
-                taskArray[cnt++] = new Task(input);
+                try {
+                    checkItem("others", input);
+                } catch (DukeException ex) {
+                    System.out.println(ex.getMessage());
+                }
             }
         }
+    }
+
+    public static String checkItem(String type, String input) throws DukeException {
+
+        if (type.equals("event")) {
+            String pattern = "event ([a-zA-Z0-9_\\s]+) /at ([a-zA-Z0-9_\\s]+)";
+            if (!Pattern.matches(pattern, input)) {
+                throw new DukeException("\"OOPS!!! I'm sorry, but I don't know what that means :-(\"");
+            }
+            return input.substring(6);
+        }
+        else if (type.equals("deadline")) {
+            String pattern = "deadline ([a-zA-Z0-9_\\s]+) /by ([a-zA-Z0-9_\\s]+)";
+            if (!Pattern.matches(pattern, input)) {
+                throw new DukeException("\"OOPS!!! I'm sorry, but I don't know what that means :-(\"");
+            }
+            return input.substring(9);
+        }
+        else if (type.equals("todo")) {
+            String pattern = "todo ([a-zA-Z0-9_\\s]+)";
+            if (!Pattern.matches(pattern, input)) {
+                throw new DukeException("\"OOPS!!! I'm sorry, but I don't know what that means :-(\"");
+            }
+            return input.substring(5);
+        }
+        else {
+            throw new DukeException("\"OOPS!!! I'm sorry, but I don't know what that means :-(\"");
+        }
+
     }
 }
