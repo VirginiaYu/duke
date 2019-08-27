@@ -1,5 +1,8 @@
 import java.util.Scanner;
 import java.util.regex.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+
 
 public class Duke {
     public static void main(String[] args) {
@@ -17,10 +20,7 @@ public class Duke {
         Scanner sc = new Scanner(System.in);
 
         // Create a new task array
-        Task[] taskArray = new Task[100];
-
-        // Count items in array
-        int cnt=0;
+        ArrayList<Task> taskArray = new ArrayList<Task>();
 
         while (true) {
 
@@ -36,24 +36,53 @@ public class Duke {
             // List tasks
             else if (input.equals("list")) {
 
-                // If no task added
-                if (cnt==0)
+                // If no task in the list
+                if (taskArray.size()==0)
                     System.out.println("No task in your list!");
 
-                // List all task w/ their status
+                // List all task in the list w/ their status
                 else {
                     System.out.println("Here are the tasks in your list:");
-                    for(int i = 0; i < cnt; i++) {
-                        int number = i+1;
-                        System.out.println(number+"."+taskArray[i].toString());
+                    for(int i = 0; i < taskArray.size(); i++) {
+                        int ptNum = i+1;
+                        System.out.println(ptNum+"."+taskArray.get(i).toString());
                     }
                 }
             }
 
             // Mark the task as done
             else if (input.startsWith("done")) {
-                int index = Integer.parseInt(input.split(" ")[1]);
-                taskArray[index-1].markAsDone();
+                // Try and catch block
+                try {
+                    String doneInfo = checkItem("done", input);
+                    int index = Integer.parseInt(doneInfo);
+                    taskArray.get(index-1).markAsDone();
+                }
+                catch (DukeException ex) {
+                    System.out.println(ex.getMessage());
+                }
+            }
+
+            // Delete item
+            else if (input.startsWith("delete")) {
+
+                // Try and catch block
+                try {
+                    String delInfo = checkItem("delete", input);
+                    int index = Integer.parseInt(delInfo);
+
+                    // Print out the delete info
+                    System.out.println("Noted. I've removed this task: ");
+                    System.out.println(taskArray.get(index-1).toString());
+                    System.out.println("Now you have "+taskArray.size()+" tasks in the list.");
+
+                    // Remove the task
+                    taskArray.remove(index-1);
+                }
+                catch (DukeException ex) {
+                    System.out.println(ex.getMessage());
+                }
+
             }
 
             // Add event
@@ -70,19 +99,18 @@ public class Duke {
                     String at = eventInfo.split(" /at ")[1];
 
                     // Add the task into the list
-                    taskArray[cnt++] = new Event(event,at);
+                    taskArray.add(new Event(event, at));
 
                     // Print out the info of the task
                     System.out.println("Got it. I've added this task:");
-                    System.out.println("  "+taskArray[cnt-1].toString());
+                    System.out.println("  "+taskArray.get(taskArray.size()-1).toString());
                     // Show how many tasks are there in the list now
-                    System.out.println("Now you have " + cnt + " tasks in the list.");
+                    System.out.println("Now you have " + taskArray.size() + " tasks in the list.");
 
                 }
 
                 catch (DukeException ex)
                 {
-                    //System.out.println("☹ OOPS!!! I'm sorry, but I don't know what that means :-(");
                     System.out.println(ex.getMessage());
                 }
 
@@ -101,13 +129,13 @@ public class Duke {
                     String by = ddlInfo.split(" /by ")[1];
 
                     // Add the task into the list
-                    taskArray[cnt++] = new Deadline(ddl,by);
+                    taskArray.add(new Deadline(ddl,by));
 
                     // Print out the info of the task
                     System.out.println("Got it. I've added this task:");
-                    System.out.println("  "+taskArray[cnt-1].toString());
+                    System.out.println("  "+taskArray.get(taskArray.size()-1).toString());
                     // Show how many tasks are there in the list now
-                    System.out.println("Now you have " + cnt + " tasks in the list.");
+                    System.out.println("Now you have " + taskArray.size() + " tasks in the list.");
 
                 }
 
@@ -128,13 +156,13 @@ public class Duke {
                     String todoInfo = checkItem("todo", input);
 
                     // Add the task into the list
-                    taskArray[cnt++] = new Todo(todoInfo);
+                    taskArray.add(new Todo(todoInfo));
 
                     // Print out the info of the task
                     System.out.println("Got it. I've added this task:");
-                    System.out.println("  "+taskArray[cnt-1].toString());
+                    System.out.println("  "+taskArray.get(taskArray.size()-1).toString());
                     // Show how many tasks are there in the list now
-                    System.out.println("Now you have " + cnt + " tasks in the list.");
+                    System.out.println("Now you have " + taskArray.size() + " tasks in the list.");
 
                 }
 
@@ -156,6 +184,7 @@ public class Duke {
                 }
             }
         }
+
     }
 
     public static String checkItem(String type, String input) throws DukeException {
@@ -180,6 +209,20 @@ public class Duke {
                 throw new DukeException("\"OOPS!!! I'm sorry, but I don't know what that means :-(\"");
             }
             return input.substring(5);
+        }
+        else if (type.equals("done")) {
+            String pattern = "done ([0-9]+)";
+            if (!Pattern.matches(pattern, input)) {
+                throw new DukeException("\"OOPS!!! I'm sorry, but I don't know what that means :-(\"");
+            }
+            return input.substring(5);
+        }
+        else if (type.equals("delete")) {
+            String pattern = "delete ([0-9]+)";
+            if (!Pattern.matches(pattern, input)) {
+                throw new DukeException("\"OOPS!!! I'm sorry, but I don't know what that means :-(\"");
+            }
+            return input.substring(7);
         }
         else {
             throw new DukeException("\"OOPS!!! I'm sorry, but I don't know what that means :-(\"");
