@@ -1,11 +1,12 @@
+import java.io.*;
+import java.lang.reflect.Array;
 import java.util.Scanner;
 import java.util.regex.*;
 import java.util.ArrayList;
-import java.util.Iterator;
-
 
 public class Duke {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws DukeException {
+
         // Greetings!
         String logo = " ____        _        \n"
                 + "|  _ \\ _   _| | _____ \n"
@@ -15,12 +16,14 @@ public class Duke {
         System.out.println("Hello! I am\n" + logo);
         System.out.println("What can I do for you?");
 
+
+        // Load info from txt file into the task array
+        String filePath = "/Users/yu/duke.txt";
+        ArrayList<Task> taskArray = readTxtFileIntoTaskArray(filePath);
+
         // Declare the object and initialize with
         // predefined standard input object
         Scanner sc = new Scanner(System.in);
-
-        // Create a new task array
-        ArrayList<Task> taskArray = new ArrayList<Task>();
 
         while (true) {
 
@@ -229,4 +232,52 @@ public class Duke {
         }
 
     }
+
+    public static ArrayList<Task> readTxtFileIntoTaskArray(String filePath) throws DukeException
+    {
+        // Create a new task array
+        ArrayList<Task> taskArray = new ArrayList<Task>();
+
+        try {
+            File file = new File(filePath);
+            if (file.isFile() && file.exists()) {
+                InputStreamReader reader = new InputStreamReader(new FileInputStream(file));
+                BufferedReader bufferedReader = new BufferedReader(reader);
+
+                String lineTxt = null;
+                while ((lineTxt = bufferedReader.readLine()) != null) {
+                    String[] storeInfo = lineTxt.split(" \\| ");
+                    // Write the tasks into array
+                    switch (storeInfo[0]) {
+                        case "E": // Events
+                            System.out.println(storeInfo[2]);
+                            System.out.println(storeInfo[3]);
+                            taskArray.add(new Event(storeInfo[2], storeInfo[3]));
+                            if (storeInfo[1].equals("1")) taskArray.get(taskArray.size()-1).isDone=true;
+                            break;
+                        case "T":  // Todos
+                            taskArray.add(new Todo(storeInfo[2]));
+                            if (storeInfo[1].equals("1")) taskArray.get(taskArray.size()-1).isDone=true;
+                            break;
+                        case "D": // Deadlines
+                            taskArray.add(new Deadline(storeInfo[2], storeInfo[3]));
+                            if (storeInfo[1].equals("1")) taskArray.get(taskArray.size()-1).isDone=true;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                bufferedReader.close();
+                reader.close();
+            } else {
+                // file.createNewFile();
+                throw new DukeException("Sorry I cannot find such file.");
+            }
+        }
+        catch (DukeException | IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return taskArray;
+    }
+
 }
