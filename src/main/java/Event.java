@@ -39,7 +39,10 @@ public class Event extends Task {
 
     public String toTxtFile() {
         String isDoneInt = this.isDone? "1" : "0";
-        return "E | " + isDoneInt + " | " + this.description + " | " + this.at;
+        String start = (this.startMin==0)? "00":String.valueOf(this.startMin);
+        String end = (this.endMin==0)? "00":String.valueOf(this.endMin);
+        String time = this.day+"/"+this.month+"/"+this.year+" "+this.startHour+start+"-"+this.endHour+end;
+        return "E | " + isDoneInt + " | " + this.description + " | " + time;
     }
 
     public String pickMonth() {
