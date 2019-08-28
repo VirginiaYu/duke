@@ -16,7 +16,6 @@ public class Duke {
         System.out.println("Hello! I am\n" + logo);
         System.out.println("What can I do for you?");
 
-
         // Load info from txt file into the task array
         String filePath = "/Users/yu/duke.txt";
         ArrayList<Task> taskArray = readTxtFileIntoTaskArray(filePath);
@@ -60,8 +59,10 @@ public class Duke {
                     String doneInfo = checkItem("done", input);
                     int index = Integer.parseInt(doneInfo);
                     taskArray.get(index-1).markAsDone();
+
+                    writeTaskArrayIntoTxtFile(filePath, taskArray);
                 }
-                catch (DukeException ex) {
+                catch (DukeException | IOException ex) {
                     System.out.println(ex.getMessage());
                 }
             }
@@ -81,8 +82,11 @@ public class Duke {
 
                     // Remove the task
                     taskArray.remove(index-1);
+
+                    writeTaskArrayIntoTxtFile(filePath, taskArray);
+
                 }
-                catch (DukeException ex) {
+                catch (DukeException | IOException ex) {
                     System.out.println(ex.getMessage());
                 }
 
@@ -110,9 +114,11 @@ public class Duke {
                     // Show how many tasks are there in the list now
                     System.out.println("Now you have " + taskArray.size() + " tasks in the list.");
 
+                    writeTaskArrayIntoTxtFile(filePath, taskArray);
+
                 }
 
-                catch (DukeException ex)
+                catch (DukeException | IOException ex)
                 {
                     System.out.println(ex.getMessage());
                 }
@@ -140,9 +146,12 @@ public class Duke {
                     // Show how many tasks are there in the list now
                     System.out.println("Now you have " + taskArray.size() + " tasks in the list.");
 
+                    writeTaskArrayIntoTxtFile(filePath, taskArray);
+
+
                 }
 
-                catch (DukeException ex)
+                catch (DukeException | IOException ex)
                 {
                     //System.out.println("☹ OOPS!!! I'm sorry, but I don't know what that means :-(");
                     System.out.println(ex.getMessage());
@@ -167,9 +176,11 @@ public class Duke {
                     // Show how many tasks are there in the list now
                     System.out.println("Now you have " + taskArray.size() + " tasks in the list.");
 
+                    writeTaskArrayIntoTxtFile(filePath, taskArray);
+
                 }
 
-                catch (DukeException ex)
+                catch (DukeException | IOException ex)
                 {
                     //System.out.println("☹ OOPS!!! I'm sorry, but I don't know what that means :-(");
                     System.out.println(ex.getMessage());
@@ -250,8 +261,6 @@ public class Duke {
                     // Write the tasks into array
                     switch (storeInfo[0]) {
                         case "E": // Events
-                            System.out.println(storeInfo[2]);
-                            System.out.println(storeInfo[3]);
                             taskArray.add(new Event(storeInfo[2], storeInfo[3]));
                             if (storeInfo[1].equals("1")) taskArray.get(taskArray.size()-1).isDone=true;
                             break;
@@ -270,7 +279,7 @@ public class Duke {
                 bufferedReader.close();
                 reader.close();
             } else {
-                // file.createNewFile();
+                file.createNewFile();
                 throw new DukeException("Sorry I cannot find such file.");
             }
         }
@@ -280,4 +289,28 @@ public class Duke {
         return taskArray;
     }
 
+    public static void writeTaskArrayIntoTxtFile(String filePath, ArrayList<Task> taskArray) throws IOException {
+        File file = new File(filePath);
+        // File not exist
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        BufferedWriter out = new BufferedWriter(new FileWriter(file));
+        try {
+            if (taskArray.size()!=0)
+            for(int i = 0; i < taskArray.size(); i++) {
+                out.write(taskArray.get(i).toTxtFile()+"\n");
+            }
+            out.flush();
+            out.close();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+    }
 }

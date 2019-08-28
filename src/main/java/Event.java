@@ -11,4 +11,9 @@ public class Event extends Task {
     public String toString() {
         return "[E]" + super.toString() + " (at: " + by + ")";
     }
+
+    public String toTxtFile() {
+        String isDoneInt = this.isDone? "1" : "0";
+        return "E | " + isDoneInt + " | " + this.description + " | " + this.by;
+    }
 }
