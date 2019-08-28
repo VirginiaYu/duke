@@ -4,6 +4,7 @@ import java.util.Scanner;
 import java.util.regex.*;
 import java.util.ArrayList;
 
+
 public class Duke {
     public static void main(String[] args) throws DukeException {
 
@@ -208,12 +209,20 @@ public class Duke {
             if (!Pattern.matches(pattern, input)) {
                 throw new DukeException("\"OOPS!!! I'm sorry, but I don't know what that means :-(\"");
             }
+            String timePattern = "\"event ([a-zA-Z0-9_\\\\s]+) /at (\\d{2}-\\d{2}-\\d{4}) (\\d{4})";
+            if (!Pattern.matches(timePattern, input)) {
+                throw new DukeException("Please adjust the time format to 28/08/2019 0900");
+            }
             return input.substring(6);
         }
         else if (type.equals("deadline")) {
             String pattern = "deadline ([a-zA-Z0-9_\\s]+) /by ([a-zA-Z0-9_\\s]+)";
             if (!Pattern.matches(pattern, input)) {
                 throw new DukeException("\"OOPS!!! I'm sorry, but I don't know what that means :-(\"");
+            }
+            String timePattern = "\"event ([a-zA-Z0-9_\\\\s]+) /by (\\d{2}-\\d{2}-\\d{4}) (\\d{4})";
+            if (!Pattern.matches(timePattern, input)) {
+                throw new DukeException("Please adjust the time format to 28/08/2019 0900");
             }
             return input.substring(9);
         }

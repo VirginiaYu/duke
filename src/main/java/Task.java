@@ -25,8 +25,10 @@ public class Task {
         return "["+this.getStatusIcon()+"] "+this.description;
     }
 
-    public String toTxtFile() {
+    public String toTxtFile() { // Write to the txt file
         return "";
     }
+
+
 }
 
