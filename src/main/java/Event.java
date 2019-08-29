@@ -41,6 +41,8 @@ public class Event extends Task {
         String isDoneInt = this.isDone? "1" : "0";
         String start = (this.startMin==0)? "00":String.valueOf(this.startMin);
         String end = (this.endMin==0)? "00":String.valueOf(this.endMin);
+        if (this.startMin<10) start = ("0"+ this.startMin);
+        if (this.endMin<10) end = ("0"+ this.endMin);
         String time = this.day+"/"+this.month+"/"+this.year+" "+this.startHour+start+"-"+this.endHour+end;
         return "E | " + isDoneInt + " | " + this.description + " | " + time;
     }

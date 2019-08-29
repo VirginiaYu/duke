@@ -34,6 +34,7 @@ public class Deadline extends Task {
     public String toTxtFile() {
         String isDoneInt = this.isDone? "1" : "0";
         String minute = (this.minute==0)? "00":String.valueOf(this.minute);
+        if (this.minute<10) minute = ("0"+ this.minute);
         String time = this.day+"/"+this.month+"/"+this.year+" "+this.hour+minute;
         return "D | " + isDoneInt + " | " + this.description + " | " + time;
     }
