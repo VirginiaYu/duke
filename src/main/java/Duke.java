@@ -79,10 +79,10 @@ public class Duke {
                     // Print out the delete info
                     System.out.println("Noted. I've removed this task: ");
                     System.out.println(taskArray.get(index-1).toString());
-                    System.out.println("Now you have "+taskArray.size()+" tasks in the list.");
 
                     // Remove the task
                     taskArray.remove(index-1);
+                    System.out.println("Now you have "+taskArray.size()+" tasks in the list.");
 
                     writeTaskArrayIntoTxtFile(filePath, taskArray);
 
