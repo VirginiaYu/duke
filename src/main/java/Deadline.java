@@ -9,20 +9,18 @@ public class Deadline extends Task {
     protected int minute;
 
     public Deadline(String description, String byTime) {
-        super(description);
+        super(description); // Call constructor of super class
+
         String Date = byTime.split(" ")[0];
+        this.day = Integer.parseInt(Date.split("/")[0]);
+        this.month = Integer.parseInt(Date.split("/")[1]);
+        this.year = Integer.parseInt(Date.split("/")[2]);
+
         String Time = byTime.split(" ")[1];
-        int dd = Integer.parseInt(Date.split("/")[0]);
-        int mm = Integer.parseInt(Date.split("/")[1]);
-        int yy = Integer.parseInt(Date.split("/")[2]);
-        int startHH = Integer.parseInt(Time.substring(0,2));
-        int startMM = Integer.parseInt(Time.substring(2,4));
-        this.day = dd;
-        this.month = mm;
-        this.year = yy;
-        this.hour = startHH;
-        this.minute = startMM;
-        this.by = pickDay()+ " of " +pickMonth() +" "+ this.year + ", " + convertTime();
+        this.hour = Integer.parseInt(Time.substring(0,2));
+        this.minute = Integer.parseInt(Time.substring(2,4));
+
+        this.by = pickDay()+ " of " + pickMonth() + " "+ this.year + ", " + convertTime();
     }
 
     @Override
@@ -33,12 +31,17 @@ public class Deadline extends Task {
     @Override
     public String toTxtFile() {
         String isDoneInt = this.isDone? "1" : "0";
-        String minute = (this.minute==0)? "00":String.valueOf(this.minute);
-        if (this.minute<10) minute = ("0"+ this.minute);
-        String Hour = (this.hour<10)? ("0"+ this.hour):String.valueOf(this.hour);
-        String time = this.day+"/"+this.month+"/"+this.year+" "+hour+minute;
-        return "D | " + isDoneInt + " | " + this.description + " | " + time;
+        String Minute = String.valueOf(this.minute);
+        if (this.minute<10)
+            Minute = "0"+ Minute; // e.g. 12:08 cannot be stored into 12:8
+        String Hour = String.valueOf(this.hour);
+        if (this.hour<10)
+            Hour = "0"+ Hour; // e.g. stored as 09:34 rather than 9:34 for integrity and re-read from txt file
+        String strTime = this.day+"/"+this.month+"/"+this.year+" "+ Hour +Minute;
+        return "D | " + isDoneInt + " | " + this.description + " | " + strTime;
     }
+
+    // Change digit month representation to text
     public String pickMonth() {
         switch (this.month) {
             case 1: return "January";
@@ -56,6 +59,8 @@ public class Deadline extends Task {
             default: return "";
         }
     }
+
+    // Day represented in ordinal numbers
     public String pickDay() {
         switch (this.day%10) {
             case 1: return "1st";
@@ -64,17 +69,22 @@ public class Deadline extends Task {
             default: return this.day+"th";
         }
     }
+
+    // Enforce AM-PM
     public String convertTime() {
-        String Time;
-        if (this.hour>12) {
-            if (this.minute==0) Time = (this.hour-12) + "PM";
-            else Time = (this.hour-12) + ":" + this.minute+ "PM";
+
+        String DeadlineTime;
+        if (this.hour>12) { // time after noon
+            if (this.minute==0) DeadlineTime = (this.hour-12) + "PM"; // e.g. 9:00PM simply writes as 9PM
+            else if (this.minute<10) DeadlineTime = (this.hour-12) + ":0" + this.minute + "PM";
+            else DeadlineTime = (this.hour-12) + ":" + this.minute+ "PM";
+        } else { // time before noon
+            if (this.minute==0) DeadlineTime = this.hour + "AM";      // e.g. 9:00AM simply writes as 9AM
+            else if (this.minute<10) DeadlineTime = this.hour + ":0" + this.minute + "AM";
+            else DeadlineTime = this.hour + ":" + this.minute + "AM";
         }
-        else {
-            if (this.minute==0) Time = this.hour + "AM";
-            Time = this.hour + ":" + this.minute + "AM";
-        }
-        return Time;
+
+        return DeadlineTime;
     }
 
 }

@@ -205,27 +205,17 @@ public class Duke {
     public static String checkItem(String type, String input) throws DukeException {
 
         if (type.equals("event")) {
-//            String pattern = "event ([a-zA-Z0-9_\\s]+) /at ([a-zA-Z0-9_\\s]+)";
             String pattern = "event ([a-zA-Z0-9_\\s]+) /at (\\d{1,2}/\\d{1,2}/\\d{4}) [012][0-9][0-6][0-9]-[012][0-9][0-6][0-9]";
             if (!Pattern.matches(pattern, input)) {
                 throw new DukeException("\"OOPS!!! I'm sorry, but I don't know what that means :-(\"\nTry to follow the time format as 28/08/2019 0942-1153");
             }
-//            String timePattern = "\"event ([a-zA-Z0-9_\\\\s]+) /at (\\d{2}-\\d{2}-\\d{4}) (\\d{4})";
-//            if (!Pattern.matches(timePattern, input)) {
-//                throw new DukeException("Please adjust the time format to 28/08/2019 0900");
-//            }
             return input.substring(6);
         }
         else if (type.equals("deadline")) {
-//            String pattern = "deadline ([a-zA-Z0-9_\\s]+) /by ([a-zA-Z0-9_\\s]+)";
-            String pattern = "deadline ([a-zA-Z0-9_\\\\s]+) /by (\\d{1,2}/\\d{1,2}/\\d{4}) [012][0-9][0-6][0-9]";
+            String pattern = "deadline ([a-zA-Z0-9_\\s]+) /by (\\d{1,2}/\\d{1,2}/\\d{4}) [012][0-9][0-6][0-9]";
             if (!Pattern.matches(pattern, input)) {
                 throw new DukeException("\"OOPS!!! I'm sorry, but I don't know what that means :-(\"\nTry to follow the time format as 28/08/2019 0700");
             }
-//            String timePattern = "\"event ([a-zA-Z0-9_\\\\s]+) /by (\\d{2}-\\d{2}-\\d{4}) (\\d{4})";
-//            if (!Pattern.matches(timePattern, input)) {
-//                throw new DukeException("Please adjust the time format to 28/08/2019 0900");
-//            }
             return input.substring(9);
         }
         else if (type.equals("todo")) {
