@@ -63,7 +63,10 @@ public class Duke {
 
                     writeTaskArrayIntoTxtFile(filePath, taskArray);
                 }
-                catch (DukeException | IOException ex) {
+                catch (IOException ex) {
+                    System.out.println(ex.getMessage());
+                }
+                catch (DukeException ex){
                     System.out.println(ex.getMessage());
                 }
             }
@@ -87,7 +90,38 @@ public class Duke {
                     writeTaskArrayIntoTxtFile(filePath, taskArray);
 
                 }
-                catch (DukeException | IOException ex) {
+                catch (IOException ex) {
+                    System.out.println(ex.getMessage());
+                }
+                catch (DukeException ex){
+                    System.out.println(ex.getMessage());
+                }
+
+            }
+
+            else if (input.startsWith("find")) {
+
+                // Try and catch block
+                try {
+                    String regex = checkItem("find", input);
+                    Pattern pattern = Pattern.compile(regex);
+
+                    if (taskArray.size()==0)
+                        System.out.println("None");
+                    else {
+                        System.out.println("Here are the matching tasks in your list:");
+                        int cnt = 0;
+                        for(int i = 0; i < taskArray.size(); i++) {
+                            String strToBeMatched = taskArray.get(i).description;
+                            Matcher matcher = pattern.matcher(strToBeMatched);
+                            if (matcher.find()) {
+                                cnt++;
+                                System.out.println(cnt+"."+taskArray.get(i).toString());
+                            }
+                        }
+                    }
+                }
+                catch (DukeException ex) {
                     System.out.println(ex.getMessage());
                 }
 
@@ -238,6 +272,13 @@ public class Duke {
                 throw new DukeException("\"OOPS!!! I'm sorry, but I don't know what that means :-(\"");
             }
             return input.substring(7);
+        }
+        else if (type.equals("find")){
+            String pattern = "find ([a-zA-Z0-9_\\s]+)";
+            if (!Pattern.matches(pattern, input)) {
+                throw new DukeException("\"OOPS!!! I'm sorry, but I don't know what that means :-(\"");
+            }
+            return input.substring(5);
         }
         else {
             throw new DukeException("\"OOPS!!! I'm sorry, but I don't know what that means :-(\"");
