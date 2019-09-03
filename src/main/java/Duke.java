@@ -105,7 +105,7 @@ public class Duke {
                     // Split the input, and get the event and the event data/time
                     String event = eventInfo.split(" /at ")[0];
                     String at = eventInfo.split(" /at ")[1];
-
+                    
                     // Add the task into the list
                     taskArray.add(new Event(event, at));
 
