@@ -153,11 +153,13 @@ public class Duke {
 
                 }
 
-                catch (DukeException | IOException ex)
+                catch (DukeException ex)
                 {
                     System.out.println(ex.getMessage());
                 }
-
+                catch (IOException ex) {
+                    System.out.println(ex.getMessage());
+                }
             }
 
             else if (input.startsWith("deadline")) {
