@@ -20,7 +20,7 @@ public class Deadline extends Task {
         this.hour = Integer.parseInt(Time.substring(0,2));
         this.minute = Integer.parseInt(Time.substring(2,4));
 
-        this.by = pickDay()+ " of " + pickMonth() + " "+ this.year + ", " + convertTime();
+        this.by = pickDay()+ " of " + Month.returnMonth(month) + " "+ this.year + ", " + convertTime();
     }
 
     @Override
@@ -39,25 +39,6 @@ public class Deadline extends Task {
             Hour = "0"+ Hour; // e.g. stored as 09:34 rather than 9:34 for integrity and re-read from txt file
         String strTime = this.day+"/"+this.month+"/"+this.year+" "+ Hour +Minute;
         return "D | " + isDoneInt + " | " + this.description + " | " + strTime;
-    }
-
-    // Change digit month representation to text
-    public String pickMonth() {
-        switch (this.month) {
-            case 1: return "January";
-            case 2: return "February";
-            case 3: return "March";
-            case 4: return "April";
-            case 5: return "May";
-            case 6: return "June";
-            case 7: return "July";
-            case 8: return "August";
-            case 9: return "September";
-            case 10: return "October";
-            case 11: return "November";
-            case 12: return "December";
-            default: return "";
-        }
     }
 
     // Day represented in ordinal numbers

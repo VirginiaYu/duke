@@ -24,7 +24,7 @@ public class Event extends Task {
         this.endHour = Integer.parseInt(Time.substring(5,7));
         this.endMin = Integer.parseInt(Time.substring(7,9));
 
-        this.at = pickDay()+ " of " + pickMonth() + " " + this.year + ", " + convertTime();
+        this.at = pickDay()+ " of " + Month.returnMonth(month) + " " + this.year + ", " + convertTime();
     }
 
     @Override
@@ -51,24 +51,6 @@ public class Event extends Task {
 
         String strTime = this.day+"/"+this.month+"/"+this.year+" "+ startHr + startMinute + "-" + endHr + endMinute;
         return "E | " + isDoneInt + " | " + this.description + " | " + strTime;
-    }
-
-    public String pickMonth() {
-        switch (this.month) {
-            case 1: return "January";
-            case 2: return "February";
-            case 3: return "March";
-            case 4: return "April";
-            case 5: return "May";
-            case 6: return "June";
-            case 7: return "July";
-            case 8: return "August";
-            case 9: return "September";
-            case 10: return "October";
-            case 11: return "November";
-            case 12: return "December";
-            default: return "";
-        }
     }
 
     public String pickDay() {
