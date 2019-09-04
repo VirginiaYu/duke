@@ -1,6 +1,0 @@
-Here are the tasks in your list:
-1.[T][✓] eat lunch
-OOPS!!! I'm sorry, but I don't know what that means :-(
-Got it. I've added this task:
-  [T][✘] read book
-Now you have 2 tasks in the list.
