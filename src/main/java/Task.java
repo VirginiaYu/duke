@@ -18,7 +18,6 @@ public class Task {
 
     public String markAsDone() {
         this.isDone = true;
-        // System.out.println("Nice! I've marked this task as done:");
         return "  [\u2713] "+this.description;
     }
 

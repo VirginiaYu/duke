@@ -1,0 +1,54 @@
+Sorry I cannot find output file. So I have created one for you! :)
+Hello from
+ ____        _        
+|  _ \ _   _| | _____ 
+| | | | | | | |/ / _ \
+| |_| | |_| |   <  __/
+|____/ \__,_|_|\_\___|
+
+Hello! I'm Duke
+What can I do for you?
+No task in your list!
+Got it. I've added this task: 
+  [T][✘] search project info
+Now you have 1 tasks in your list.
+Got it. I've added this task: 
+  [E][✘] residence party (at: 7th of October 2019, 7:00-9:00PM)
+Now you have 2 tasks in your list.
+Got it. I've added this task: 
+  [D][✘] assignment1 (by: 2nd of September 2019, 11:59PM)
+Now you have 3 tasks in your list.
+Got it. I've added this task: 
+  [T][✘] borrow book
+Now you have 4 tasks in your list.
+Got it. I've added this task: 
+  [D][✘] return book (by: 1st of December 2019, 11:59AM)
+Now you have 5 tasks in your list.
+Here are the tasks in your list:
+1.[T][✘] search project info
+2.[E][✘] residence party (at: 7th of October 2019, 7:00-9:00PM)
+3.[D][✘] assignment1 (by: 2nd of September 2019, 11:59PM)
+4.[T][✘] borrow book
+5.[D][✘] return book (by: 1st of December 2019, 11:59AM)
+Here are the matching tasks in your list:
+1.[T][✘] borrow book
+2.[D][✘] return book (by: 1st of December 2019, 11:59AM)
+Nice! I've marked this task as done:
+  [✓] search project info
+Nice! I've marked this task as done:
+  [✓] assignment1
+Here are the tasks in your list:
+1.[T][✓] search project info
+2.[E][✘] residence party (at: 7th of October 2019, 7:00-9:00PM)
+3.[D][✓] assignment1 (by: 2nd of September 2019, 11:59PM)
+4.[T][✘] borrow book
+5.[D][✘] return book (by: 1st of December 2019, 11:59AM)
+Noted. I've removed this task:
+[E][✘] residence party (at: 7th of October 2019, 7:00-9:00PM)
+Now you have 4 tasks in your list.
+Here are the tasks in your list:
+1.[T][✓] search project info
+2.[D][✓] assignment1 (by: 2nd of September 2019, 11:59PM)
+3.[T][✘] borrow book
+4.[D][✘] return book (by: 1st of December 2019, 11:59AM)
+Bye. See you soon again!

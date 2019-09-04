@@ -1,0 +1,14 @@
+list
+todo search project info
+event residence party /at 07/10/2019 1900-2100
+deadline assignment1 /by 12/09/2019 2359
+todo borrow book
+deadline return book /by 31/12/2019 1159
+list
+find book
+done 1
+done 3
+list
+delete 2
+list
+bye

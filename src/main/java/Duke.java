@@ -23,7 +23,7 @@ public class Duke {
     }
 
     public void run() {
-        ui.greetingMsg();
+        ui.showWelcome();
 
         //String userInput = ui.askForInput();
         Parser parser = new Parser(ui, tasks);

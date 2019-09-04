@@ -9,7 +9,7 @@ public class Ui {
         return value;
     }
 
-    public void greetingMsg() {
+    public void showWelcome() {
         // Greetings!
         String logo = " ____        _        \n"
                 + "|  _ \\ _   _| | _____ \n"
@@ -17,6 +17,7 @@ public class Ui {
                 + "| |_| | |_| |   <  __/\n"
                 + "|____/ \\__,_|_|\\_\\___|\n";
         System.out.println("Hello from\n" + logo);
+        System.out.println("Hello! I'm Duke");
         System.out.println("What can I do for you?");
     }
 
