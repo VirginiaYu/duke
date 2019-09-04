@@ -85,7 +85,7 @@ public class Event extends Task {
         String Time;
 
         boolean am; // true if the time is before noon, false otherwise.
-        if (this.startHour>12) am = false;
+        if (this.startHour>11) am = false;
         else am = true;
 
         String startMinute = String.valueOf(this.startMin);
@@ -93,7 +93,7 @@ public class Event extends Task {
         String endMinute = String.valueOf(this.endMin);
         if (this.endMin<10) endMinute = "0"+endMinute;
 
-        if (this.endHour>12) {
+        if (this.endHour>11) {
             endTime = (this.endHour-12) + ":" + endMinute + "PM";
             Time = am? (this.startHour + ":" + startMinute+"AM-"+endTime):((this.startHour-12) + ":" + startMinute +"-"+endTime);
         } else {

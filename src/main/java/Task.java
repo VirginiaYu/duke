@@ -1,4 +1,5 @@
 public class Task {
+
     protected String description;
     protected boolean isDone;
 
@@ -15,10 +16,10 @@ public class Task {
         return this.description;
     }
 
-    public void markAsDone() {
+    public String markAsDone() {
         this.isDone = true;
-        System.out.println("Nice! I've marked this task as done:");
-        System.out.println("  [\u2713] "+this.description);
+        // System.out.println("Nice! I've marked this task as done:");
+        return "  [\u2713] "+this.description;
     }
 
     public String toString() {

@@ -1,4 +1,6 @@
-public class DukeException extends Exception{
+import java.util.InputMismatchException;
+
+public class DukeException extends InputMismatchException {
 
     public DukeException(String message)
     {

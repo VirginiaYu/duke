@@ -74,7 +74,7 @@ public class Deadline extends Task {
     public String convertTime() {
 
         String DeadlineTime;
-        if (this.hour>12) { // time after noon
+        if (this.hour>11) { // time after noon
             if (this.minute==0) DeadlineTime = (this.hour-12) + "PM"; // e.g. 9:00PM simply writes as 9PM
             else if (this.minute<10) DeadlineTime = (this.hour-12) + ":0" + this.minute + "PM";
             else DeadlineTime = (this.hour-12) + ":" + this.minute+ "PM";
