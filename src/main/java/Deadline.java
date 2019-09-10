@@ -1,3 +1,7 @@
+/**
+ * Represent a type of task which must
+ * be done before a fixed time point
+ */
 
 public class Deadline extends Task {
 
@@ -8,9 +12,16 @@ public class Deadline extends Task {
     protected int hour;
     protected int minute;
 
+    /**
+     * Constructor of Deadline class
+     *
+     * @param description the description of the task
+     * @param byTime time point before which the task must be done
+     */
     public Deadline(String description, String byTime) {
         super(description); // Call constructor of super class
 
+        // Split the time info which contains day, month, year, and due time
         String Date = byTime.split(" ")[0];
         this.day = Integer.parseInt(Date.split("/")[0]);
         this.month = Integer.parseInt(Date.split("/")[1]);
@@ -20,17 +31,32 @@ public class Deadline extends Task {
         this.hour = Integer.parseInt(Time.substring(0,2));
         this.minute = Integer.parseInt(Time.substring(2,4));
 
+        // Generate human understandable description of due time as its byTime string
         this.by = pickDay()+ " of " + Month.returnMonth(month) + " "+ this.year + ", " + convertTime();
     }
 
+    /**
+     * Override method
+     * Returns a descriptive string
+     *
+     * @return a string that would be printed out in UI
+     * [D] task description (by: some time point in good format)
+     */
     @Override
     public String toString() {
         return "[D]" + super.toString() + " (by: " + by + ")";
     }
 
+    /**
+     * Override method
+     * Returns an output record
+     *
+     * @return a string that would be written into file
+     * D | 1 or 0 | task description | some time point in clean format)
+     */
     @Override
     public String toTxtFile() {
-        String isDoneInt = this.isDone? "1" : "0";
+        String isDoneInt = this.isDone? "1" : "0"; // Retrieve Done status
         String Minute = String.valueOf(this.minute);
         if (this.minute<10)
             Minute = "0"+ Minute; // e.g. 12:08 cannot be stored into 12:8
@@ -41,7 +67,12 @@ public class Deadline extends Task {
         return "D | " + isDoneInt + " | " + this.description + " | " + strTime;
     }
 
-    // Day represented in ordinal numbers
+    /**
+     * Present the due day in ordinal numbers
+     *
+     * @return a string that presented in ordinal numbers
+     * e.g. thirty-first refers to 31st
+     */
     public String pickDay() {
         switch (this.day%10) {
             case 1: return this.day+"st";
@@ -51,7 +82,12 @@ public class Deadline extends Task {
         }
     }
 
-    // Enforce AM-PM
+    /**
+     * Present the due hour in AM/PM format
+     *
+     * @return a string that present due hour in 12-hour format, using AM/PM
+     * e.g. 14:30 is 2:30PM
+     */
     public String convertTime() {
 
         String DeadlineTime;

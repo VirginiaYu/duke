@@ -1,26 +1,38 @@
 import java.io.*;
-import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * a class dealing with the user input
+ * and convert it into separate useful info
+ * for later use
+ */
 public class Parser {
 
     private Ui ui;
     private TaskList list;
     protected String filePath;
 
+    /**
+     * Constructor of Parser class
+     * @param temp1 ui
+     * @param temp2 task list
+     */
     public Parser(Ui temp1, TaskList temp2) {
         this.ui = temp1;
         this.list = temp2;
         this.filePath = "/Users/yu/duke.txt";
     }
 
-    public void process(String value) throws DukeException {
-        String userInput;
-        String[] temp, temp1;
+    /**
+     * process user input
+     * @throws DukeException
+     */
+    public void process() throws DukeException {
+
         while (true) {
             try {
-                value = ui.askForInput();
+                String value = ui.askForInput();
 
                 // Exit
                 if (value.equals("bye")) {
@@ -201,8 +213,15 @@ public class Parser {
         }
     }
 
-    // Check whether user input is in the right format
-    // by using regular expression to match the pattern
+    /**
+     * Check whether user input is in the right format
+     * by using regular expression to match the pattern
+     *
+     * @param type the type of command
+     * @param input user input
+     * @return semi-processed information
+     * @throws DukeException
+     */
     public static String checkItem(String type, String input) throws DukeException {
 
         if (type.equals("event")) {
@@ -253,7 +272,13 @@ public class Parser {
 
     }
 
-
+    /**
+     * write task array into txt file
+     *
+     * @param filePath file path
+     * @param taskArray task list
+     * @throws IOException
+     */
     public static void writeTaskArrayIntoTxtFile(String filePath, TaskList taskArray) throws IOException {
         File file = new File(filePath);
         // File not exist

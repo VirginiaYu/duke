@@ -1,6 +1,13 @@
+/**
+ * a class presenting Month
+ */
 public enum Month {
     January, February, March, April, May, June, July, August, September, October, November, December;
 
+    /**
+     * find month word corresponding to number 1-12
+     * @return month
+     */
     public static String returnMonth(int index){
         switch (index){
             case 1: return "January";
@@ -15,7 +22,7 @@ public enum Month {
             case 10: return "October";
             case 11: return "November";
             case 12: return "December";
+            default: return "";
         }
-        return null;
     }
 }

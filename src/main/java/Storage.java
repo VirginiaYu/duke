@@ -1,14 +1,29 @@
 import java.io.*;
 import java.util.ArrayList;
 
+/**
+ * implement a class that can
+ * read the task list from existing txt file
+ * and output/write updated task list to file
+ */
 public class Storage {
 
     protected String filePath;
 
+    /**
+     * Constructor
+     * @param file file path
+     */
     public Storage(String file) {
         this.filePath = file;
     }
 
+    /**
+     * load data from txt file
+     *
+     * @return a task list that contains info reading from txt file
+     * @throws DukeException
+     */
     public ArrayList<Task> load() throws DukeException
     {
         // Create a new task array
@@ -56,6 +71,10 @@ public class Storage {
         return taskArray;
     }
 
+    /**
+     * set file path
+     * @param newFilePath new file path
+     */
     public void setFilePath(String newFilePath) {
         this.filePath = newFilePath;
     }
