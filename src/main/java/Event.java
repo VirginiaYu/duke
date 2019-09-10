@@ -53,7 +53,6 @@ public class Event extends Task {
         return "E | " + isDoneInt + " | " + this.description + " | " + strTime;
     }
 
-    /** Day represented in ordinal numbers */
     public String pickDay() {
         switch (this.day%10) {
             case 1: return this.day+"st";
