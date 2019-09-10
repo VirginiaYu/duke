@@ -41,12 +41,12 @@ public class Deadline extends Task {
         return "D | " + isDoneInt + " | " + this.description + " | " + strTime;
     }
 
-    // Day represented in ordinal numbers
+    /** Day represented in ordinal numbers */
     public String pickDay() {
         switch (this.day%10) {
-            case 1: return "1st";
-            case 2: return "2nd";
-            case 3: return "3rd";
+            case 1: return this.day+"st";
+            case 2: return this.day+"nd";
+            case 3: return this.day+"rd";
             default: return this.day+"th";
         }
     }
