@@ -36,7 +36,7 @@ public class Event extends Task {
         this.endMin = Integer.parseInt(Time.substring(7,9));
 
         // Generate human understandable description of due time as its atTime string
-        this.at = pickDay()+ " of " + Month.returnMonth(month) + " " + this.year + ", " + convertTime();
+        this.at = Day.pickDay(day)+ " of " + Month.returnMonth(month) + " " + this.year + ", " + convertTime();
     }
 
     /**
@@ -62,36 +62,17 @@ public class Event extends Task {
         String isDoneInt = this.isDone? "1" : "0"; // Retrieve Done status
 
         String startMinute = String.valueOf(this.startMin);
-        if (this.startMin<10)
-            startMinute = "0"+ startMinute;
+        if (this.startMin<10) startMinute = "0"+ startMinute;
         String endMinute = String.valueOf(this.endMin);
-        if (this.endMin<10)
-            endMinute = "0"+ endMinute;
+        if (this.endMin<10) endMinute = "0"+ endMinute;
 
         String startHr = String.valueOf(this.startHour);
         String endHr = String.valueOf(this.endHour);
-        if (this.startHour<10)
-            startHr = "0"+ startHr;
-        if (this.endHour<10)
-            endHr = "0" + endHr;
+        if (this.startHour<10) startHr = "0"+ startHr;
+        if (this.endHour<10) endHr = "0" + endHr;
 
         String strTime = this.day+"/"+this.month+"/"+this.year+" "+ startHr + startMinute + "-" + endHr + endMinute;
         return "E | " + isDoneInt + " | " + this.description + " | " + strTime;
-    }
-
-    /**
-     * Present the event day in ordinal numbers
-     *
-     * @return a string that presented in ordinal numbers
-     * e.g. thirty-first refers to 31st
-     */
-    public String pickDay() {
-        switch (this.day%10) {
-            case 1: return this.day+"st";
-            case 2: return this.day+"nd";
-            case 3: return this.day+"rd";
-            default: return this.day+"th";
-        }
     }
 
     /**
