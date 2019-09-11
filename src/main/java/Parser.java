@@ -11,17 +11,18 @@ public class Parser {
 
     private Ui ui;
     private TaskList list;
-    protected String filePath;
+    private Storage storage;
 
     /**
      * Constructor of Parser class
      * @param temp1 ui
      * @param temp2 task list
+     * @param temp3 storage
      */
-    public Parser(Ui temp1, TaskList temp2) {
+    public Parser(Ui temp1, TaskList temp2, Storage temp3) {
         this.ui = temp1;
         this.list = temp2;
-        this.filePath = "/Users/yu/duke.txt";
+        this.storage = temp3;
     }
 
     /**
@@ -35,20 +36,16 @@ public class Parser {
                 String value = ui.askForInput();
 
                 // Exit
-                if (value.equals("bye")) {
-                    ui.byeMsg();
-                    System.exit(0);
-                }
+                if (value.startsWith("bye")) { ui.byeMsg(); System.exit(0); }
 
                 // List
                 else if (value.startsWith("list")) {
-                    if (list.getTask().size()==0) { // If no task in the list
-                        System.out.println("No task in your list!");
-                    } else { // List all tasks in the list w/ their status
+                    // If no task in the list
+                    if (list.getTask().size()==0) System.out.println("No task in your list!");
+                    // List all tasks in the list w/ their status
+                    else {
                         ui.listMsg();
-                        for(int i = 0; i < list.getTask().size(); i++) {
-                            System.out.println((i+1)+"."+list.getTask().get(i).toString());
-                        }
+                        for(int i = 0; i < list.getTask().size(); i++) { System.out.println((i+1)+"."+list.getTask().get(i).toString()); }
                     }
                 }
 
@@ -58,8 +55,7 @@ public class Parser {
                         String regex = checkItem("find", value);
                         Pattern pattern = Pattern.compile(regex);
 
-                        if (list.getTask().size()==0)
-                            System.out.println("No task in list. No matching.");
+                        if (list.getTask().size()==0) System.out.println("No task in list. No matching.");
                         else {
                             ui.findMsg();
                             int cnt = 0;
@@ -72,9 +68,7 @@ public class Parser {
                                 }
                             }
                         }
-                    } catch (DukeException e) {
-                        System.out.println(e.getMessage());
-                    }
+                    } catch (DukeException e) { System.out.println(e.getMessage()); }
                 }
 
                 // Mark as Done
@@ -82,21 +76,14 @@ public class Parser {
                     try {
                         String doneInfo = checkItem("done", value);
                         int index = Integer.parseInt(doneInfo) - 1;
-                        if (index < 0 | index >= list.getTask().size()) {
-                            System.out.println("Sorry. Index invalid.");
-                        } else {
+                        if (index < 0 | index >= list.getTask().size()) System.out.println("Sorry. Index invalid.");
+                        else {
                             String description = list.getTask().get(index).markAsDone();
                             ui.doneTaskMsg(description);
-                            // Update txt file
-                            writeTaskArrayIntoTxtFile(filePath, list);
+                            storage.writeTaskArrayIntoTxtFile(list); // Update txt file
                         }
-                    }
-                    catch (IOException ex) {
-                        System.out.println(ex.getMessage());
-                    }
-                    catch (DukeException ex){
-                        System.out.println(ex.getMessage());
-                    }
+                    } catch (IOException ex) { System.out.println(ex.getMessage());
+                    } catch (DukeException ex){ System.out.println(ex.getMessage()); }
                 }
 
                 // Delete
@@ -104,24 +91,16 @@ public class Parser {
                     try {
                         String delInfo = checkItem("delete", value);
                         int index = Integer.parseInt(delInfo) - 1;
-                        if (index < 0 | index >= list.getTask().size()) {
-                            System.out.println("Sorry. Index invalid.");
-                        } else {
+                        if (index < 0 | index >= list.getTask().size()) System.out.println("Sorry. Index invalid.");
+                        else {
                             String description = list.getTask().get(index).toString();
                             int size = list.getTask().size() - 1;
                             list.removeTask(index); // Remove the task
-                            // Print out Msg
-                            ui.deleteMsg(description, size);
-                            // Update txt file
-                            writeTaskArrayIntoTxtFile(filePath, list);
+                            ui.deleteMsg(description, size); // Print out Msg
+                            storage.writeTaskArrayIntoTxtFile(list); // Update txt file
                         }
-                    }
-                    catch (IOException ex) {
-                        System.out.println(ex.getMessage());
-                    }
-                    catch (DukeException ex){
-                        System.out.println(ex.getMessage());
-                    }
+                    } catch (IOException ex) { System.out.println(ex.getMessage());
+                    } catch (DukeException ex){ System.out.println(ex.getMessage()); }
                 }
 
                 // Add todos
@@ -129,24 +108,15 @@ public class Parser {
                     try {
                         // Check if the right format
                         String todoInfo = checkItem("todo", value);
-
                         // Add the task into the list
                         Todo todo = new Todo(todoInfo);
                         list.addTask(todo);
-
                         // Print out Msg
                         ui.addTaskMsg(todo.toString(), list.getTask().size());
-
                         // Update txt file
-                        writeTaskArrayIntoTxtFile(filePath, list);
-
-                    }
-
-                    catch (IOException ex) {
-                        System.out.println(ex.getMessage());
-                    } catch (DukeException ex) {
-                        System.out.println(ex.getMessage());
-                    }
+                        storage.writeTaskArrayIntoTxtFile(list);
+                    } catch (IOException ex) { System.out.println(ex.getMessage());
+                    } catch (DukeException ex) { System.out.println(ex.getMessage()); }
                 }
 
                 // Add deadlines
@@ -154,27 +124,18 @@ public class Parser {
                     try {
                         // Check if the right format
                         String ddlInfo = checkItem("deadline", value);
-
                         // Split the input, and get the deadline and the ddl data/time
                         String ddl = ddlInfo.split(" /by ")[0];
                         String by = ddlInfo.split(" /by ")[1];
-
                         // Add the task into the list
                         Deadline deadline = new Deadline(ddl,by);
                         list.addTask(deadline);
-
                         // Print out the info of the task
                         ui.addTaskMsg(deadline.toString(),list.getTask().size());
-
                         // Update txt file
-                        writeTaskArrayIntoTxtFile(filePath, list);
-                    }
-
-                    catch (IOException ex) {
-                        System.out.println(ex.getMessage());
-                    } catch (DukeException ex) {
-                        System.out.println(ex.getMessage());
-                    }
+                        storage.writeTaskArrayIntoTxtFile(list);
+                    } catch (IOException ex) { System.out.println(ex.getMessage());
+                    } catch (DukeException ex) { System.out.println(ex.getMessage()); }
                 }
 
                 // Add events
@@ -182,34 +143,21 @@ public class Parser {
                     try {
                         // Check if the right format
                         String eventInfo = checkItem("event", value);
-
                         // Split the input, and get the event and the event data/time
                         String ev = eventInfo.split(" /at ")[0];
                         String at = eventInfo.split(" /at ")[1];
-
                         // Add the task into the list
                         Event event = new Event(ev, at);
                         list.addTask(event);
-
                         // Print out the info of the task
                         ui.addTaskMsg(event.toString(),list.getTask().size());
-
                         // Update txt file
-                        writeTaskArrayIntoTxtFile(filePath, list);
-                    }
-
-                    catch (DukeException ex) {
-                        System.out.println(ex.getMessage());
-                    } catch (IOException ex) {
-                        System.out.println(ex.getMessage());
-                    }
+                        storage.writeTaskArrayIntoTxtFile(list);
+                    } catch (DukeException ex) { System.out.println(ex.getMessage());
+                    } catch (IOException ex) { System.out.println(ex.getMessage()); }
                 }
-                else {
-                    throw new DukeException("\u2639 OOPS!!! I'm sorry, but I don't know what that means :-(");
-                }
-            } catch (DukeException e) {
-                System.out.println(e.getMessage());
-            }
+                else throw new DukeException("\u2639 OOPS!!! I'm sorry, but I don't know what that means :-(");
+            } catch (DukeException e) { System.out.println(e.getMessage()); }
         }
     }
 
@@ -226,81 +174,42 @@ public class Parser {
 
         if (type.equals("event")) {
             String pattern = "event ([a-zA-Z0-9_\\s]+) /at (\\d{1,2}/\\d{1,2}/\\d{4}) [012][0-9][0-6][0-9]-[012][0-9][0-6][0-9]";
-            if (!Pattern.matches(pattern, input)) {
+            if (!Pattern.matches(pattern, input))
                 throw new DukeException("\u2639 OOPS!!! I'm sorry, but I don't know what that means :-(\nTry to follow the format as \"event some_task /at 28/08/2019 0945-1350");
-            }
             return input.substring(6);
         }
         else if (type.equals("deadline")) {
             String pattern = "deadline ([a-zA-Z0-9_\\s]+) /by (\\d{1,2}/\\d{1,2}/\\d{4}) [012][0-9][0-6][0-9]";
-            if (!Pattern.matches(pattern, input)) {
+            if (!Pattern.matches(pattern, input))
                 throw new DukeException("\u2639 OOPS!!! I'm sorry, but I don't know what that means :-(\nPlease follow the format as \"deadline some_task /by 28/08/2019 2100\"");
-            }
             return input.substring(9);
         }
         else if (type.equals("todo")) {
             String pattern = "todo ([a-zA-Z0-9_\\s]+)";
-            if (!Pattern.matches(pattern, input)) {
+            if (!Pattern.matches(pattern, input))
                 throw new DukeException("\u2639 OOPS!!! I'm sorry, but I don't know what that means :-(\nPlease follow the format as \"todo some_task\"");
-            }
             return input.substring(5);
         }
         else if (type.equals("done")) {
             String pattern = "done ([0-9]+)";
-            if (!Pattern.matches(pattern, input)) {
+            if (!Pattern.matches(pattern, input))
                 throw new DukeException("\u2639 OOPS!!! I'm sorry, but I don't know what that means :-(\nPlease follow the format as \"done some_number\"");
-            }
             return input.substring(5);
         }
         else if (type.equals("delete")) {
             String pattern = "delete ([0-9]+)";
-            if (!Pattern.matches(pattern, input)) {
+            if (!Pattern.matches(pattern, input))
                 throw new DukeException("\u2639 OOPS!!! I'm sorry, but I don't know what that means :-(\nPlease follow the format as \"delete some_number\"");
-            }
             return input.substring(7);
         }
         else if (type.equals("find")){
             String pattern = "find ([a-zA-Z0-9_\\s]+)";
-            if (!Pattern.matches(pattern, input)) {
+            if (!Pattern.matches(pattern, input))
                 throw new DukeException("\u2639 OOPS!!! I'm sorry, but I don't know what that means :-(\nPlease follow the format as \"find some_description\".");
-            }
             return input.substring(5);
         }
-        else {
+        else
             throw new DukeException("\u2639 OOPS!!! I'm sorry, but I don't know what that means :-(");
-        }
-
     }
 
-    /**
-     * write task array into txt file
-     *
-     * @param filePath file path
-     * @param taskArray task list
-     * @throws IOException
-     */
-    public static void writeTaskArrayIntoTxtFile(String filePath, TaskList taskArray) throws IOException {
-        File file = new File(filePath);
-        // File not exist
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        BufferedWriter out = new BufferedWriter(new FileWriter(file));
-        try {
-            if (taskArray.getTask().size()!=0)
-                for(int i = 0; i < taskArray.getTask().size(); i++) {
-                    out.write(taskArray.getTask().get(i).toTxtFile()+"\n");
-                }
-            out.flush();
-            out.close();
-        }
-        catch (IOException e){
-            e.printStackTrace();
-        }
-    }
 }

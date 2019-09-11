@@ -5,14 +5,14 @@
 
 public class Event extends Task {
 
-    protected String at;
-    protected int day;
-    protected int month;
-    protected int year;
-    protected int startHour;
-    protected int startMin;
-    protected int endHour;
-    protected int endMin;
+    private String at;
+    private int day;
+    private int month;
+    private int year;
+    private int startHour;
+    private int startMin;
+    private int endHour;
+    private int endMin;
 
     /**
      * Constructor of Event Class

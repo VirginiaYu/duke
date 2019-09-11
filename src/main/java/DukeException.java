@@ -7,11 +7,9 @@ import java.util.InputMismatchException;
 public class DukeException extends InputMismatchException {
 
     /** Constructor
-     *
      * @param message error message
      */
-    public DukeException(String message)
-    {
+    public DukeException(String message) {
         // Call constructor of parent Exception
         super(message);
     }

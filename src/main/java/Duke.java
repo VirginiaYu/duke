@@ -12,33 +12,30 @@ public class Duke {
     private Storage storage;
 
     /**
-     * initialize duke project
+     * Initialize duke project
      *
      * @param filePath file path
+     * @throws DukeException
      */
-    public Duke(String filePath) {
+    public Duke(String filePath) throws DukeException {
         ui = new Ui();
         storage = new Storage(filePath);
-        try {
-            tasks = new TaskList(storage.load());
-        } catch (DukeException e) {
+        try { tasks = new TaskList(storage.load()); }
+        catch (DukeException e) {
             ui.showLoadingError(e);
             ArrayList<Task> arrList = new ArrayList<Task>();
             tasks = new TaskList(arrList);
         }
     }
 
-    /** run duke */
+    /** run duke **/
     public void run() {
         ui.showWelcome();
-
-        //String userInput = ui.askForInput();
-        Parser parser = new Parser(ui, tasks);
+        Parser parser = new Parser(ui, tasks, storage);
         parser.process();
 
     }
-
-    /** main */
+    /** main **/
     public static void main(String[] args){
         new Duke("/Users/yu/duke.txt").run();
     }

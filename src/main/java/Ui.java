@@ -3,8 +3,8 @@ import java.util.Scanner;
  * ui implementation
  */
 public class Ui {
-    protected String value;
-    protected Scanner sc = new Scanner(System.in);
+    private String value;
+    private Scanner sc = new Scanner(System.in);
 
     /**
      * retreive user input

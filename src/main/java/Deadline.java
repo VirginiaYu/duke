@@ -5,12 +5,12 @@
 
 public class Deadline extends Task {
 
-    protected String by;
-    protected int day;
-    protected int month;
-    protected int year;
-    protected int hour;
-    protected int minute;
+    private String by;
+    private int day;
+    private int month;
+    private int year;
+    private int hour;
+    private int minute;
 
     /**
      * Constructor of Deadline class

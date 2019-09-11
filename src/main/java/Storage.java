@@ -8,7 +8,7 @@ import java.util.ArrayList;
  */
 public class Storage {
 
-    protected String filePath;
+    private String filePath;
 
     /**
      * Constructor
@@ -17,6 +17,12 @@ public class Storage {
     public Storage(String file) {
         this.filePath = file;
     }
+
+    /**
+     * set file path
+     * @param newFilePath new file path
+     */
+    private void setFilePath(String newFilePath) { this.filePath = newFilePath; }
 
     /**
      * load data from txt file
@@ -28,7 +34,6 @@ public class Storage {
     {
         // Create a new task array
         ArrayList<Task> taskArray = new ArrayList<Task>();
-
         try {
             File file = new File(filePath);
             if (file.isFile() && file.exists()) {
@@ -52,8 +57,7 @@ public class Storage {
                             taskArray.add(new Deadline(storeInfo[2], storeInfo[3]));
                             if (storeInfo[1].equals("1")) taskArray.get(taskArray.size()-1).isDone=true;
                             break;
-                        default:
-                            break;
+                        default: break;
                     }
                 }
                 bufferedReader.close();
@@ -62,20 +66,37 @@ public class Storage {
                 file.createNewFile();
                 throw new DukeException("Sorry I cannot find output file. So I have created one for you! :)");
             }
-        } catch (IOException ex){
-            System.out.println(ex.getMessage());
-        }
-        catch (DukeException ex) {
-            System.out.println(ex.getMessage());
-        }
+        } catch (IOException ex){ System.out.println(ex.getMessage());
+        } catch (DukeException ex) { System.out.println(ex.getMessage()); }
         return taskArray;
     }
 
     /**
-     * set file path
-     * @param newFilePath new file path
+     * write task array into txt file
+     *
+     * @param taskArray task list
+     * @throws IOException
      */
-    public void setFilePath(String newFilePath) {
-        this.filePath = newFilePath;
+    public void writeTaskArrayIntoTxtFile(TaskList taskArray) throws IOException {
+        String filepath = this.filePath;
+        File file = new File(filepath);
+        // File not exist
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) { System.out.println(e.getMessage());
+            } catch (DukeException e) { System.out.println(e.getMessage()); }
+        }
+
+        BufferedWriter out = new BufferedWriter(new FileWriter(file));
+        try {
+            if (taskArray.getTask().size()!=0)
+                for(int i = 0; i < taskArray.getTask().size(); i++) {
+                    out.write(taskArray.getTask().get(i).toTxtFile()+"\n");
+                }
+            out.flush();
+            out.close();
+        } catch (IOException e){ System.out.println(e.getMessage()); }
     }
+
 }
